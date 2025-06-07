@@ -1,0 +1,1 @@
+rm gog-results.txt steam-results.txt gog-number.txt steam-number.txt
