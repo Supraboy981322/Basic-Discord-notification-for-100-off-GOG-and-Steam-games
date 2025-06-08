@@ -1,5 +1,12 @@
+<p align="center">
+  <img src="https://github.com/Supraboy981322/Basic-Discord-notification-for-100-off-GOG-and-Steam-games/raw/refs/heads/main/logo.png">
+</p>
+
 # A Basic Discord bot for games that are 100% off on GOG and Steam
 I wrote this because I just felt like writing my own Shell script to recieve notifications on Discord for games that are 100% off on GOG and Steam
+
+> [!NOTE]
+> I am still waiting for my friend to test the setup process, so it's not fully polished yet. Also, I'm not completely finished either, it works perfectly as is, but I just want to make some `.txt` files for long variable values that are defined in more than one file.
 
 When the cronjob starts it downloads the Steam and GOG web pages, then looks for keywords on the page, and sends a Discord notification to a Discord webhook address if any are found.
 
