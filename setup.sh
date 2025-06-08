@@ -14,7 +14,7 @@ rm free-games-checker.zip
 # ask user for discord api webhook url
 echo "In order to communicate with Discord, this script needs a Discord API webhook URL, please create one if not already done."
 echo "If you do not know how to do this, Google is your friend, you can use it."
-read -p "Your Discord API webhook: " "DiscordURL
+read -p "Your Discord API webhook: " DiscordURL
 echo "Setting the value of 'discord_url' in 'send-gog.sh' and 'send-steam.sh'"
 # set the value of "discord_url" in send-gog.sh and send-steam.sh
 DEFAULT_DISCORD_URL="YOUR_DISCORD_WEBHOOK_URL_GOES_HERE"
