@@ -47,6 +47,15 @@ elif [[ "$FREQUENCY" == "m" ]]; then
    WEEK="*"
 fi
 
+echo "making scripts executable"
+sudo chmod +x master.sh
+sudo chmod +x steam.sh
+sudo chmod +x gog.sh
+sudo chmod +x send-steam.sh
+sudo chmod +x send-gog.sh
+sudo chmod +x cleanup.sh
+
+echo "creating cronjob"
 crontab -l > mycron
 #echo new cron into cron file
 echo "$MINUTE $HOUR $DAY $MONTH $WEEK $HOME/free-games-checker/./master.sh" >> mycron
