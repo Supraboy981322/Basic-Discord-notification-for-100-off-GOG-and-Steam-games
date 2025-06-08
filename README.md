@@ -3,7 +3,9 @@ A basic Shell script set for Linux that checks for games that are 100% off on GO
 
 Instructions:
     1. Download the setup shell script and execute it as su.
+    
     ```
     wget "https://github.com/Supraboy981322/Basic-Discord-notification-for-100-off-GOG-and-Steam-games/raw/refs/heads/main/setup.sh" && sudo chmod +x setup.sh && sudo setup.sh
     ```
+
     2. The setup script will tell you what to do from here.
