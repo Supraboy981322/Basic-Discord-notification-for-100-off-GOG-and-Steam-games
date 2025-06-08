@@ -6,4 +6,5 @@ Instructions:
     
     `wget "https://github.com/Supraboy981322/Basic-Discord-notification-for-100-off-GOG-and-Steam-games/raw/refs/heads/main/setup.sh" && sudo chmod +x setup.sh && sudo setup.sh`
     
+    
     2. The setup script will tell you what to do from here.
