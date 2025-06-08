@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ~/
-echo "If you did not, please be sure to run this script under sudo"
+echo "NOTE: this script should only be run without sudo"
 echo "downloading package"
 echo "The package will be placed in your /home/$USER directory"
 # download package
@@ -9,7 +9,7 @@ mkdir free-games-checker
 cd free-games-checker
 wget "https://github.com/Supraboy981322/Basic-Discord-notification-for-100-off-GOG-and-Steam-games/raw/refs/heads/main/free-games-checker.zip" > /dev/null
 unzip free-games-checker.zip > /dev/null
-rm free-games-checker.zip
+sudo rm free-games-checker.zip
 
 # ask user for discord api webhook url
 echo "In order to communicate with Discord, this script needs a Discord API webhook URL, please create one if not already done."
@@ -55,6 +55,6 @@ crontab -l > mycron
 echo "$MINUTE $HOUR $DAY $MONTH $WEEK ~/free-games-checker/./master.sh" >> mycron
 #install new cron file
 crontab mycron
-rm mycron
+sudo rm mycron
 
 echo "Thank you for installing my Steam and GOG free game sale Discord bot."
