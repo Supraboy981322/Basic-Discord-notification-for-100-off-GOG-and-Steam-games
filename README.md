@@ -1,5 +1,8 @@
-# Basic-Discord-notification-for-100-off-GOG-and-Steam-games
-A basic Shell script set for Linux that checks for games that are 100% off on GOG and Steam, then sends a Discord notification to a Discord webhook address if any are found
+# A Basic Discord bot for games that are 100% off on GOG and Steam
+I wrote this because I just felt like writing my own Shell script to recieve notifications on Discord for games that are 100% off on GOG and Steam
+
+When the cronjob starts it downloads the Steam and GOG web pages, then looks for keywords on the page, and sends a Discord notification to a Discord webhook address if any are found.
+
 
 ---
 # Instructions:
