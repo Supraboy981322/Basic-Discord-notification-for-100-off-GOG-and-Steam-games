@@ -1,11 +1,12 @@
+#!/bin/bash
 discord_url="YOUR_DISCORD_WEBHOOK_URL_GOES_HERE"
 
 generate_post_data() {
   cat <<EOF
 {
   "embeds": [{
-    "title": "$(cat 'steam-results.txt')",
-    "description": "$(cat 'steam-number.txt') games are 100% off on Steam.",
+    "title": "Steam has $(cat 'steam-number.txt') games that are 100% off!",
+    "description": "[You can see it here]($(cat 'steam-url.txt'))",
     "color": "3447003"
   }]
 }
