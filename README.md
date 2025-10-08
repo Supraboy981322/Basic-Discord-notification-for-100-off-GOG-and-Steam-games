@@ -5,7 +5,10 @@
 > [!NOTE]
 > I am doing a rewrite of this in Go (in my spare time), but I will only update this repository each time a new store is completely integrated.
 
-# A Basic Discord bot for games that are 100% off on GOG and Steam
+# free-games-checker
+
+### A Basic Discord bot for games that are 100% off on GOG and Steam
+
 I wrote this because I just felt like writing my own Shell script to recieve notifications on Discord for games that are 100% off on GOG and Steam
 
 > [!Warning]
