@@ -1,0 +1,34 @@
+[
+    {
+        "store": "Steam",
+        "webhooks": [
+            "https://discord.com/api/webhooks/1386852955440943236/UmsbC_sx2QD7mKB2KYv40uL5T_7z7bznHdkh4rB0NOMlLTAU93I2OcqgMiczNaeU_FHQ",
+            "https://discord.com/api/webhooks/1386852945831661618/0IpQCWVn4aaE2OOk93vg2ZubY-OGnUACf01n_wCeA7rNSasZU5gYDCQi_hjy-CBTFt0f",
+            "https://discord.com/api/webhooks/1386852961036144744/_jVMK2ei21LD7SaeX-PntVqeC2mXPfYEwuWMzZd3hYOFp_tJyW5660gLDx2f8Y-RPihh"
+        ]
+    },
+    {
+        "store": "GOG",
+        "webhooks": [
+            "https://discord.com/api/webhooks/1414408386815987762/MDjU5R7m7DOcHRiC6k1ptlF7Qk1BfrIvXmJ2dZSRdcpwkARlvi3WAjyaqrzMcXiY2Ojm",
+            "https://discord.com/api/webhooks/1414408392679882772/mWXkvXqz0SSSearQl8U_ONc5gEbQ_6OI6cI6vayNj2lEuquYo8638uA1TGbdnMVLfVa7",
+            "https://discord.com/api/webhooks/1414408399017345065/IpfDqMHORPc8wEX8wDpunn9BBBo5TowCkux_1WkAYNCtUILhjYxkWmoOwSwTgDN7XkXs"
+        ]
+    },
+    {
+        "store": "Itch",
+        "webhooks": [
+            "https://discord.com/api/webhooks/1414408451802533988/d-O6fiJVIdp9YDgRDBAbWlvuQURd7UUkpOguiv1IiaPB7w0GNHvYwtu7YrXjdYRl5Kyk",
+            "https://discord.com/api/webhooks/1414408448916852826/23jZvcdsATcY4cHhrS2VOfWeuLsICG24eO4C5zxVJNM6pvxjEHahPDaWsB-giX_XCf_8",
+            "https://discord.com/api/webhooks/1414408443732819968/gRNAJTr5zGFJvF7DHrgdk580mIztf3MRckzB4Pj36bn0YaieK4o3kiVYvnn5qe9FzNhW"
+        ]
+    },
+    {
+        "store": "Epic",
+        "webhooks": [
+            "https://discord.com/api/webhooks/1414408477622800394/jdTDUpbdD7vWAR52LFt84tBEd1ahINN_eTOidmbWSS15AP9NlmmbwtrmDudiUV71gZvD",
+            "https://discord.com/api/webhooks/1414408475739688960/u2Eak0XgagMuWvG1rNecjMhJ_5AnWLf9Dv8s81ZX-MxFrum4g9fTE8EVt2yLsBXc2d81",
+            "https://discord.com/api/webhooks/1414408470127706265/2aBetSnk6ivh4bJ67k8rWCnp_SXZZEa1Mo5_BoAIifIo01vC1wHOMTAUcvZYIPkWSyKz"
+        ]
+    }
+]
