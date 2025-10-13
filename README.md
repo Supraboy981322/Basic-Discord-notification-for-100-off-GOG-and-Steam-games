@@ -5,6 +5,9 @@
 > [!NOTE]
 > I am doing a rewrite of this in Go (in my spare time), but I will only update this repository each time a new store is completely integrated.
 
+> [!Warning]
+> The install script is currently broken, please do not use the install script. It is the last step of the rewrite.
+
 # free-games-checker
 
 ### A Basic Discord bot for games that are 100% off on GOG and Steam
@@ -19,8 +22,6 @@ When the cronjob starts it downloads the Steam and GOG web pages, then looks for
 
 ---
 # Instructions:
-- Download the setup shell script and DO NOT execute it as `su`.
-    
-        wget "https://github.com/Supraboy981322/Basic-Discord-notification-for-100-off-GOG-and-Steam-games/raw/refs/heads/main/setup.sh" && sudo chmod +x setup.sh && ./setup.sh
+- Manually download and compile. Better intructions will be written after the rewrite.
 
 - The setup script will tell you what to do from here.
