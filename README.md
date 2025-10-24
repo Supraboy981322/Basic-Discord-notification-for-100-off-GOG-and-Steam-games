@@ -2,9 +2,6 @@
   <img src="https://github.com/Supraboy981322/Basic-Discord-notification-for-100-off-GOG-and-Steam-games/raw/refs/heads/main/logo.png">
 </p>
 
-> [!Warning]
-> The install script is currently being re-written, please do not use the install script.
-
 # free-games-checker
 
 ### A Basic Discord bot for games that are 100% off on GOG and Steam
@@ -21,5 +18,24 @@ I still have the original Bash scripts, but I am not open-sourcing them because 
 
 ---
 
-# Instructions:
-- Manually download and compile. Better instructions will be created after the install script is written.
+# Installation:
+
+>[!NOTE]
+>You'll need 3 webhooks per store (currently just Steam and GOG, so 6) pepared to input into the setup script 
+
+The install script has the following dependencies:
+- `jq`
+- `tar`
+- `bzip2`
+- `bash`
+
+- run the install script:
+    curl:
+    ```shell
+    curl https://raw.githubusercontent.com/Supraboy981322/free-games-checker/main/setup.sh | bash
+    ```
+    or, with wget
+    ```shell
+    wget -qO - https://raw.githubusercontent.com/Supraboy981322/free-games-checker/main/setup.sh | bash
+    ```
+- Follow the instructions given by the script
