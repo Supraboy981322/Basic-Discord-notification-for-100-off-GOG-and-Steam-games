@@ -9,7 +9,7 @@ import (
     "bytes"
     "strconv"
     "encoding/json"
-    "regexp"
+//    "regexp"
     "github.com/tidwall/gjson"
     "io/ioutil"
     "log"
@@ -184,10 +184,9 @@ func scrapeSteam(searchURL string) (int, [][]string) {
     //save the name to the current data array
     gatheredData = append(gatheredData, name)
 
-    //get the game's capsule image
+/*    //get the game's capsule image
     capsuleIMG := e.ChildAttr("img[src^='https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/']", "src")
-
-    capsuleIMGregex := regexp.MustCompile(`capsule[a-zA-z0-9_]+`)
+    capsuleIMGregex := regexp.MustCompile(`capsule_[0-9]x[0-9]`)
 
     //swap the file in the url for the header (for a higher-resolution image)
     rawHeaderIMG := capsuleIMGregex.ReplaceAllString(capsuleIMG, "header")
@@ -214,11 +213,15 @@ func scrapeSteam(searchURL string) (int, [][]string) {
     }
 
     //save the IMG url to the current data array
-    gatheredData = append(gatheredData, cleanedHeaderIMG)
+//    gatheredData = append(gatheredData, cleanedHeaderIMG)
+    gatheredData = append(gatheredData, capsuleIMG)*/
 
     //go to the game's store page to get the description and tags
-    gameTags, gameDesc := goToGamePage(cleanedLink)
+    gameTags, gameDesc, gameIMG := goToGamePage(cleanedLink)
     
+	//add img url to the data list
+    gatheredData = append(gatheredData, gameIMG)
+
     //add the tags to the data list
     gatheredData = append(gatheredData, gameTags)
 
@@ -244,9 +247,10 @@ func scrapeSteam(searchURL string) (int, [][]string) {
 /************************************************************/
 /** function to go to the game page to get the description **/
 /************************************************************/
-func goToGamePage(gameURL string) (string, string) {
+func goToGamePage(gameURL string) (string, string, string) {
   var desc string
   var tags string
+  var img string
 
   //create default collector
   c := colly.NewCollector(
@@ -282,6 +286,13 @@ func goToGamePage(gameURL string) (string, string) {
     tags = "\"" + tagsCleaned
   })
 
+  //if the page contains the game's header
+  c.OnHTML("img[class='game_header_image_full']", func(e *colly.HTMLElement) {
+		//get the header
+		rawIMG := e.Attr("src")
+		img = strings.Split(rawIMG, "?")[0]
+  })
+
   //return error if there are any
   c.OnError(func(r *colly.Response, err error) {
     fmt.Printf("Request URL: %s failed with response: %v", r.Request.URL, err)
@@ -290,7 +301,7 @@ func goToGamePage(gameURL string) (string, string) {
   //go to the game's page
   c.Visit(gameURL)
 
-  return tags, desc
+  return tags, desc, img
 }
 
 
