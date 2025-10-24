@@ -12,6 +12,7 @@ import (
 	"time"
 	"io/ioutil"
 	"log"
+	"path/filepath"
 
 	"github.com/tidwall/gjson"
 )
@@ -90,8 +91,20 @@ func log_(text string, eror error) {
 
 
 func getWebhook(store string, which int) string {
+	//get the path of the free-games-checker binary
+	binaryPath, err := os.Executable()
+	if err != nil {
+		log.Fatalf("failed to get path of free-games-checker")
+	}
+	
+	//get the directory of binary from path
+	path := filepath.Dir(binaryPath)
+		
+	//construct settings.json path
+	settingsPath := fmt.Sprintf("%s/settings.json", path)
+
 	//read the settings.json file
-	storesJSONbyte, err := ioutil.ReadFile("settings.json")
+	storesJSONbyte, err := ioutil.ReadFile(settingsPath)
 	if err != nil {
 		log_("err reading settings.json", err)
 	}
