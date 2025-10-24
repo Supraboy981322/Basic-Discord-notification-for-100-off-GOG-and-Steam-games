@@ -9,7 +9,6 @@ import (
     "bytes"
     "strconv"
     "encoding/json"
-//    "regexp"
     "github.com/tidwall/gjson"
     "io/ioutil"
     "log"
@@ -21,15 +20,9 @@ type webhooksStruct struct {
 }
 
 const (
-  /*****************************************/
-  /**Replace these with your webhook URLs **/
-  /******************************************/
-  // for testing
-
   steamSearchURL = "https://store.steampowered.com/search/?maxprice=free&category1=998%2C997%2C993%2C996%2C994&specials=1&ndl=1"
 
   //color codes
-  /*(change these for Discord)*/
   ColorReset   = "\033[0m"
   ColorRed     = "\033[31m"
   ColorGreen   = "\033[32m"
@@ -183,38 +176,6 @@ func scrapeSteam(searchURL string) (int, [][]string) {
 
     //save the name to the current data array
     gatheredData = append(gatheredData, name)
-
-/*    //get the game's capsule image
-    capsuleIMG := e.ChildAttr("img[src^='https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/']", "src")
-    capsuleIMGregex := regexp.MustCompile(`capsule_[0-9]x[0-9]`)
-
-    //swap the file in the url for the header (for a higher-resolution image)
-    rawHeaderIMG := capsuleIMGregex.ReplaceAllString(capsuleIMG, "header")
-
-    //cleanup the url (remove args)
-    cleanedHeaderIMG := strings.Split(rawHeaderIMG, "?")[0]
-
-    //check if the cleanedHeaderIMG contains a string from some capsule
-    // IMGs that point to a subfolder which doesn't have the header img
-    // and fix it
-    invalidHeaderFilePath := `apps/[a-zA-Z0-9]+/[a-zA-Z0-9]+/header\.jpg` //apps/[appid]/[random string]/header.jpg
-    containsInvalidPath, err := regexp.MatchString(invalidHeaderFilePath, cleanedHeaderIMG)
-    //error handling
-    if err != nil {
-        fmt.Println("Error matching regex:", err)
-        return
-    }
-    if containsInvalidPath {
-      //compile the string that invalidates the url
-      invalidPath := regexp.MustCompile(`[a-zA-Z0-9]+/header\.jpg`)
-      fixedPath := invalidPath.ReplaceAllString(cleanedHeaderIMG, "header.jpg")
-      //replace with valid url
-      cleanedHeaderIMG = fixedPath
-    }
-
-    //save the IMG url to the current data array
-//    gatheredData = append(gatheredData, cleanedHeaderIMG)
-    gatheredData = append(gatheredData, capsuleIMG)*/
 
     //go to the game's store page to get the description and tags
     gameTags, gameDesc, gameIMG := goToGamePage(cleanedLink)
