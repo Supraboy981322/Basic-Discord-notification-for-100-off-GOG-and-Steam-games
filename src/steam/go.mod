@@ -1,4 +1,4 @@
-module free-games-checker
+module steam
 
 go 1.25.2
 

@@ -3,15 +3,16 @@ package main
 import (
     "fmt"
     "strings"
-    "github.com/gocolly/colly/v2"
     "net/http"
     "os"
     "bytes"
     "strconv"
     "encoding/json"
-    "github.com/tidwall/gjson"
     "io/ioutil"
     "log"
+
+    "github.com/gocolly/colly/v2"
+    "github.com/tidwall/gjson"
 )
 
 type webhooksStruct struct {
@@ -20,9 +21,10 @@ type webhooksStruct struct {
 }
 
 const (
+  //steam seach url
   steamSearchURL = "https://store.steampowered.com/search/?maxprice=free&category1=998%2C997%2C993%2C996%2C994&specials=1&ndl=1"
 
-  //color codes
+  //color codes (for terminal)
   ColorReset   = "\033[0m"
   ColorRed     = "\033[31m"
   ColorGreen   = "\033[32m"
