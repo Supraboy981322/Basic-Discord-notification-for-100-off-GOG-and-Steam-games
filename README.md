@@ -23,12 +23,11 @@ I still have the original Bash scripts, but I am not open-sourcing them because 
 >[!NOTE]
 >You'll need 3 Discord webhooks per store (currently just Steam and GOG, so 6) pepared to input into the setup script 
 
-The install script has the following dependencies:
-- `jq`
-- `tar`
-- `bzip2`
-- `bash`
-
+- The install script has the following dependencies:
+  - `jq`
+  - `tar`
+  - `bzip2`
+  - `bash`
 - run the install script:
     curl:
     ```shell
