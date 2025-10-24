@@ -38,3 +38,8 @@ I still have the original Bash scripts, but I am not open-sourcing them because 
     wget -qO - https://raw.githubusercontent.com/Supraboy981322/free-games-checker/main/setup.sh | bash
     ```
 - Follow the instructions given by the script
+- Create a cronjob which runs `free-games-checker` at your desired time 
+    For example, if your install is located in `/home/user/foo/free-games-checker` and you want to run it daily at noon:
+    ```crontab
+    00 12 * * * /home/user/foo/./free-games-checker
+    ```
