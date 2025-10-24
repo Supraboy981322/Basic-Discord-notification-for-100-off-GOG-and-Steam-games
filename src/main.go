@@ -24,14 +24,14 @@ type webhooksStruct struct {
 var (
 	stores = []string {
 		"Steam",
-//		"GOG"
+		"GOG",
 	}
 )
 
 const (
 	//will replace with parsing the settings.json file
 	steamSearchURL = "https://store.steampowered.com/search/?maxprice=free&category1=998%2C997%2C993%2C996%2C994&specials=1&ndl=1"
-	gogSearchURL = "https://www.gog.com/en/games?genres=adventure,racing,rpg,shooter,simulation&priceRange=9,16&discounted=true&onlyPreservedGames=true"
+	gogSearchURL = "https://www.gog.com/en/games?priceRange=0,0&discounted=true"
 
 	//color codes
 	ColorReset   = "\033[0m"
@@ -174,7 +174,7 @@ func main() {
 			numGames, gamesData = scrapeSteam(storeURL)
 		case "GOG":
 			storeURL = gogSearchURL
-//			numGames, gamesData = scrapeGOG(storeURL)
+			numGames, gamesData = scrapeGOG(storeURL)
 		default:
 			errMsg := "attempted to scrape unsupported store"
 			err := errors.New(errMsg)
