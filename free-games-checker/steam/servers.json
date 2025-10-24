@@ -2,33 +2,33 @@
     {
         "store": "Steam",
         "webhooks": [
-            "",
-            "",
-            ""
+            "1st discord webhook for steam",
+            "2nd discord webhook for steam",
+            "3rd discord webhook for steam"
         ]
     },
     {
         "store": "GOG",
         "webhooks": [
-            "",
-            "",
-            ""
+            "1st discord webhook for GOG",
+            "2nd discord webhook for GOG",
+            "3rd discord webhook for GOG"
         ]
     },
     {
         "store": "Itch",
         "webhooks": [
-            "",
-            "",
-            ""
+            "1st discord webhook for Itch",
+            "2nd discord webhook for Itch",
+            "3rd discord webhook for Itch"
         ]
     },
     {
         "store": "Epic",
         "webhooks": [
-            "",
-            "",
-            ""
+            "1st discord webhook for Epic",
+            "2nd discord webhook for Epic",
+            "3rd discord webhook for Epic"
         ]
     }
 ]
