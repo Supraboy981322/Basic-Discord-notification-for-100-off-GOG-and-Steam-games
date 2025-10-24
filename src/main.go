@@ -141,7 +141,6 @@ func printGame(gameNum int, gameData []string) {
 		"tags",
 		"desc",
 	}
-	
 	if gameNum != -1 {
 		//log the number of games
 		log_(fmt.Sprintf("game %d", gameNum+1), nil)
@@ -150,9 +149,25 @@ func printGame(gameNum int, gameData []string) {
 	//for each of the data types, log the data in
 	//  a particular format
 	for i := 0; i < len(dataTypes); i++ {
+		var itemColor string
+		switch dataTypes[i] {
+		case "link":
+			itemColor = ColorRed
+		case "name":
+			itemColor = ColorGreen
+		case "img":
+			itemColor = ColorBlue
+		case "tags":
+			itemColor = ColorYellow
+		case "desc":
+			itemColor = ColorMagenta
+		default:
+			err := errors.New("unsupported data type")
+			log_(dataTypes[i], err)
+		}
 		log_(fmt.Sprintf(
 				"  %sgame %s:%s\n    %s\n",
-				ColorRed, 
+				itemColor, 
 				dataTypes[i],
 				ColorReset,
 				gameData[i]), nil)
@@ -181,6 +196,7 @@ func main() {
 			log_(stores[i], err)
 		}
 	
+		
 		//log store's url
 		log_(storeURL, nil)
 	
