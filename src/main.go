@@ -19,6 +19,7 @@ import (
 
 type webhooksStruct struct {
 	storeName string `json:"store"`
+	storeSearch string `json:"search"`
 	discordWebhooks []string `json:"webhooks"`
 }
 
@@ -30,10 +31,6 @@ var (
 )
 
 const (
-	//will replace with parsing the settings.json file
-	steamSearchURL = "https://store.steampowered.com/search/?maxprice=free&category1=998%2C997%2C993%2C996%2C994&specials=1&ndl=1"
-	gogSearchURL = "https://www.gog.com/en/games?priceRange=0,0&discounted=true"
-
 	//color codes
 	ColorReset   = "\033[0m"
 	ColorRed     = "\033[31m"
@@ -89,6 +86,61 @@ func log_(text string, eror error) {
 	}
 }
 
+func getStoreURL(store string) string {
+	//get the path of the free-games-checker binary
+	binaryPath, err := os.Executable()
+	if err != nil {
+		log.Fatal("failed to get the path of free-games-checker")
+	}
+
+	//get the directory of binary from path
+	path := filepath.Dir(binaryPath)
+
+	//construct settings.json path
+	settingsPath := fmt.Sprintf("%s/settings.json", path)
+
+	//read the settings.json file
+	storesJSONbyte, err := ioutil.ReadFile(settingsPath)
+	if err != nil {
+		log_("err reading settings.json", err)
+	}
+	
+	//convert byte[] from json to a string
+	storesJSON := string(storesJSONbyte)
+
+	index := -1
+	gjson.Parse(storesJSON).ForEach(
+		func(i, v gjson.Result) bool {
+			if v.Get("store").String() == store {
+				//get the index of the store in json
+				index = int(i.Int())
+	
+				//exit the current iteration of the loop
+				return false
+			}
+			//move to the next iteration of the loop
+			return true
+	})
+
+	if index != -1 {
+		searchURLpath := fmt.Sprintf(
+			"%d.search",
+			index)
+		
+		log_(fmt.Sprintf(
+				"searchURLpath := %s\n",
+				searchURLpath), nil)
+
+		searchURL := gjson.Get(
+			storesJSON,
+			searchURLpath).String()
+		log_(searchURL, nil)
+
+		return searchURL
+	} else {
+		return " "
+	}
+}
 
 func getWebhook(store string, which int) string {
 	//get the path of the free-games-checker binary
@@ -199,11 +251,11 @@ func main() {
 		//call the scraper, err if unsupported
 		switch stores[i] {
 		case "Steam":
-			storeURL = steamSearchURL
+			storeURL = getStoreURL(stores[i])
 			numGames, gamesData = scrapeSteam(storeURL)
 			storeColor = 3447003
 		case "GOG":
-			storeURL = gogSearchURL
+			storeURL = getStoreURL(stores[i])
 			numGames, gamesData = scrapeGOG(storeURL)
 			storeColor = 5793266
 		default:
