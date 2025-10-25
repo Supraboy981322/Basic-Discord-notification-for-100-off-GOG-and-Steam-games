@@ -205,7 +205,7 @@ func main() {
 		case "GOG":
 			storeURL = gogSearchURL
 			numGames, gamesData = scrapeGOG(storeURL)
-			storeColor = 10181046
+			storeColor = 5793266
 		default:
 			errMsg := "attempted to scrape unsupported store"
 			err := errors.New(errMsg)
