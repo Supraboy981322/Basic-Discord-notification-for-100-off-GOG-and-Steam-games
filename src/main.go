@@ -194,15 +194,18 @@ func main() {
 		var numGames int
 		var storeURL string
 		var gamesData [][]string
+		var storeColor int
 
 		//call the scraper, err if unsupported
 		switch stores[i] {
 		case "Steam":
 			storeURL = steamSearchURL
 			numGames, gamesData = scrapeSteam(storeURL)
+			storeColor = 3447003
 		case "GOG":
 			storeURL = gogSearchURL
 			numGames, gamesData = scrapeGOG(storeURL)
+			storeColor = 10181046
 		default:
 			errMsg := "attempted to scrape unsupported store"
 			err := errors.New(errMsg)
@@ -244,7 +247,7 @@ func main() {
 				gameTags,
 				gameLink,
 				gameIMG,
-				3447003, //Discord embed card color
+				storeColor,
 				currDiscordURL)
 
 			printGame(-1, gamesData[i])
