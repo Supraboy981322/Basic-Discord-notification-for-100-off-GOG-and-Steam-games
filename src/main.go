@@ -239,28 +239,47 @@ func sendGamesToDiscord(
 		resp.Status), nil)
 }
 
-func sendAmountToDiscord(amount string, platform string) {
+func sendAmountToDiscord(amount int, platform string) {
 	webhookURL := getWebhook(platform, 0)
 
-	log_("webhookURL == " + webhookURL, nil)
-
-	//make sure to user the proper grammatical number
-	verbageISare := "are"
-	verbageGame := "games"
-	if amount == "1" {
-		log_("Only one game? sad.\n", nil)
-		verbageISare = "is"
-		verbageGame = "game"
+	storeSettings, err := getStoreSettings(platform)
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	msg := getSettings(platform, "numMsg", false)
+	msgPar := gjson.Get(storeSettings.String(), "numMsgParams").Array()
+	fmt.Println(msgPar)
+
+	var input []any
+	for i := 0; i < len(msgPar); i++ {
+		switch (msgPar[i].String()) {
+		case "$$num$$":
+			input = append(input, amount)
+		case "$$sNoS$$":
+			if amount == 1 {
+				input = append(input, "")
+			} else {
+				input = append(input, "s")
+			}
+		case "$$isAre$$":
+			if amount == 1 {
+				input = append(input, "is")
+			} else {
+				input = append(input, "are")
+			}
+		default:
+			input = append(input, msgPar[i])
+		}
+	}
+
+	fmt.Println(input)
+	log_("webhookURL == " + webhookURL, nil)
 
 	//payload struct
 	payload := map[string]interface{}{
 		"content": fmt.Sprintf(
-				"%s currently has %s %s that %s 100%% off.",
-				platform,
-				amount,
-				verbageGame,
-				verbageISare),
+				msg, input...),
 	}
 	
 	//convert payload struct to json
@@ -321,9 +340,7 @@ func main() {
 				numGames), nil)
 
 		//send the amount of games to Discord
-		sendAmountToDiscord(
-			strconv.Itoa(numGames),
-			stores[i])
+		sendAmountToDiscord(numGames,	stores[i])
 
 		//send the games to discord and log them
 		currDiscordURL := 1

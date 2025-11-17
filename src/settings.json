@@ -2,6 +2,12 @@
   {
     "store": "Steam",
     "url": "https://store.steampowered.com/search/?maxprice=free&category1=998%2C997%2C993%2C996%2C994&specials=1&ndl=1",
+    "numMsg": "Steam currently has %d game%s that %s 100%% off",
+    "numMsgParams": [
+      "$$num$$",
+      "$$sNoS$$",
+      "$$isAre$$",
+    ],
     "webhooks": [
       "1st discord webhook for steam",
       "2nd discord webhook for steam",
@@ -11,6 +17,12 @@
   {
     "store": "GOG",
     "url": "https://www.gog.com/en/games?priceRange=0,0&discounted=true",
+    "numMsg": "GOG currently has %d game%s that %s 100%% off",
+    "numMsgParams": [
+      "$$num$$",
+      "$$sNoS$$",
+      "$$isAre$$",
+    ],
     "webhooks": [
       "1st discord webhook for GOG",
       "2nd discord webhook for GOG",
@@ -20,6 +32,12 @@
   {
     "store": "Itch",
     "url": "",
+    "numMsg": "Itch currently has %d game%s that %s 100%% off",
+    "numMsgParams": [
+      "$$num$$",
+      "$$sNoS$$",
+      "$$isAre$$",
+    ],
     "webhooks": [
       "1st discord webhook for Itch",
       "2nd discord webhook for Itch",
@@ -29,6 +47,12 @@
   {
     "store": "Epic",
     "url": "",
+    "numMsg": "Epic currently has %d game%s that %s 100%% off",
+    "numMsgParams": [
+      "$$num$$",
+      "$$sNoS$$",
+      "$$isAre$$",
+    ],
     "webhooks": [
       "1st discord webhook for Epic",
       "2nd discord webhook for Epic",
