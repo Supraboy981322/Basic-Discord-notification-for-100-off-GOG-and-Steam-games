@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-printf "Sorry, but the install script needs to be updated, some things may be broken, but it may work\n" 
+printf "Warning: the install script needs to be updated, some things may be broken, but it may work\n" 
 printf "Continue?\n"
 printf "[y/n]\n"
 read cont
