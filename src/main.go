@@ -16,13 +16,6 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-type (
-	webhooksStruct struct {
-		storeName string `json:"store"`
-		discordWebhooks []string `json:"webhooks"`
-	}
-)
-
 var (
 	stores = []string {
 		"Steam",
