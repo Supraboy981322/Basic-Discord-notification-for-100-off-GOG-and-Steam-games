@@ -1,6 +1,17 @@
 #!/bin/bash
 set -e
 
+printf "Sorry, but the install script needs to be updated, some things may be broken, but it may work\n" 
+printf "Continue?\n"
+printf "[y/n]\n"
+read cont
+
+if [[ "$cont" == "n" ]]; then
+  exit 0
+else
+  printf "continuing"
+fi 
+
 projectName="free-games-checker"
 projectAuthor="Supraboy981322"
 
