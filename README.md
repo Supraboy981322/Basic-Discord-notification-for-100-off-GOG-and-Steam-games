@@ -4,6 +4,9 @@
 
 # free-games-checker
 
+>[!WARNING]
+>There have been breaking changes since the install script was written, it may not function as intended
+
 ### A Basic Discord bot for games that are 100% off on GOG and Steam
 
 A basic Discord bot that searches Steam and GOG (with more stores planned) for games that are 100% off.
