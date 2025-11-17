@@ -8,6 +8,9 @@ import (
 	"github.com/gocolly/colly/v2"
 )
 
+/********************
+ * fn to scrape GOG *
+ ********************/
 func scrapeGOG(searchURL string) (int, [][]string) {
 	//create the games array
 	var games [][]string

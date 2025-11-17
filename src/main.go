@@ -9,7 +9,6 @@ import (
 	"os"
 	"strconv"
 	"encoding/json"
-	"time"
 	"io/ioutil"
 	"log"
 	"path/filepath"
@@ -17,20 +16,28 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-type webhooksStruct struct {
-	storeName string `json:"store"`
-	storeSearch string `json:"search"`
-	discordWebhooks []string `json:"webhooks"`
-}
+type (
+	webhooksStruct struct {
+		storeName string `json:"store"`
+		discordWebhooks []string `json:"webhooks"`
+	}
+)
 
 var (
 	stores = []string {
 		"Steam",
 		"GOG",
 	}
+
+	binPath string
+	settingsPath string
+	steamSearchURL string
+	gogSearchURL string 
 )
 
 const (
+	//will replace with parsing the settings.json file
+
 	//color codes
 	ColorReset   = "\033[0m"
 	ColorRed     = "\033[31m"
@@ -44,105 +51,7 @@ const (
 	logFile = "log.txt"
 )
 
-//the purpose of this fn is so I can print to stdout
-//  and a log file in one fn call
-func log_(text string, eror error) {
-	var content string
-	//if there was no err passed to the fn
-	if eror != nil {
-		//this is formatting for the log file 
-		content = fmt.Sprintf(
-			"%s  ;  err:  %s\n%s  ;  %s\n\n",
-			time.Now(), eror,
-			time.Now(), text)
-		//this mirrors to stdout 
-		fmt.Println(content)
-	} else {
-		//this is also formatting for log file
-		content = fmt.Sprintf(
-			"%s  ; %s\n\n", 
-			time.Now(), text)
-		//this prints just the text passed to
-		//  the fn, without the formatting 
-		fmt.Println(text)
-	}
-
-	//open the log file 
-	fi, err := os.OpenFile(
-		logFile,
-		os.O_APPEND|os.O_CREATE|os.O_WRONLY,
-		0644)
-	if err != nil {
-		log.Fatalf("err openning log file:  %s\n", err)
-	}
-
-	//prevent it from being closed until fn finishes
-	defer fi.Close()
-	
-	//write the formatted string to the log file
-	_, err = fi.WriteString(content)
-	if err != nil {
-		log.Fatalf("err writing to log file:  %s\n", err)
-	}
-}
-
-func getStoreURL(store string) string {
-	//get the path of the free-games-checker binary
-	binaryPath, err := os.Executable()
-	if err != nil {
-		log.Fatal("failed to get the path of free-games-checker")
-	}
-
-	//get the directory of binary from path
-	path := filepath.Dir(binaryPath)
-
-	//construct settings.json path
-	settingsPath := fmt.Sprintf("%s/settings.json", path)
-
-	//read the settings.json file
-	storesJSONbyte, err := ioutil.ReadFile(settingsPath)
-	if err != nil {
-		log_("err reading settings.json", err)
-	}
-	
-	//convert byte[] from json to a string
-	storesJSON := string(storesJSONbyte)
-
-	index := -1
-	gjson.Parse(storesJSON).ForEach(
-		func(i, v gjson.Result) bool {
-			if v.Get("store").String() == store {
-				//get the index of the store in json
-				index = int(i.Int())
-	
-				//exit the current iteration of the loop
-				return false
-			}
-			//move to the next iteration of the loop
-			return true
-	})
-
-	if index != -1 {
-		searchURLpath := fmt.Sprintf(
-			"%d.search",
-			index)
-		
-		log_(fmt.Sprintf(
-				"searchURLpath := %s\n",
-				searchURLpath), nil)
-
-		searchURL := gjson.Get(
-			storesJSON,
-			searchURLpath).String()
-		log_(searchURL, nil)
-
-		return searchURL
-	} else {
-		return " "
-	}
-}
-
-func getWebhook(store string, which int) string {
+func init() {
 	//get the path of the free-games-checker binary
 	binaryPath, err := os.Executable()
 	if err != nil {
@@ -150,11 +59,28 @@ func getWebhook(store string, which int) string {
 	}
 	
 	//get the directory of binary from path
-	path := filepath.Dir(binaryPath)
-		
+	binPath = filepath.Dir(binaryPath)
+	
 	//construct settings.json path
-	settingsPath := fmt.Sprintf("%s/settings.json", path)
+	settingsPath = fmt.Sprintf("%s/settings.json", binPath)
+	log_("using settings:  " + settingsPath, nil)
 
+	steamSearchURL = getSettings("Steam", "url", false)
+	gogSearchURL = getSettings("GOG", "url", false)
+	log_(gogSearchURL, nil)
+}
+
+func getSettings(which string, what string, isCustom bool) (string) {
+	storeJSON, err := getStoreSettings(which)
+	if err != nil {
+		log_("piss", nil)
+		log.Fatal(err)
+	}
+
+	return gjson.Get(storeJSON.String(), what).String()
+}
+
+func getStoreSettings(store string) (gjson.Result, error) {
 	//read the settings.json file
 	storesJSONbyte, err := ioutil.ReadFile(settingsPath)
 	if err != nil {
@@ -178,23 +104,39 @@ func getWebhook(store string, which int) string {
 			return true
 	})
 
-	if index != -1 {
-		webhookPath := fmt.Sprintf(
-			"%d.webhooks.%d",
-			index, which)
-		
-		log_(fmt.Sprintf(
-				"webhookPath := %s\n",
-				webhookPath), nil)
+	json := gjson.Get(storesJSON, strconv.Itoa(index))
 
-		webhook := gjson.Get(
-			storesJSON,
-			webhookPath).String()
-
-		return webhook
+	if index > -1 {
+		return json, nil
 	} else {
-		return " "
+		return json, errors.New("invalid index")
 	}
+
+	return json, errors.New("uncaught err")
+}
+
+
+func getWebhook(store string, which int) string {
+	storeJSON, err := getStoreSettings(store)
+
+	if err != nil {
+		log_("getWebhook()", err)
+	}
+
+	webhookPath := fmt.Sprintf(
+		"webhooks.%d", which)
+
+	log_(fmt.Sprintf(
+			"webhookPath := %s\n",
+			webhookPath),
+		nil)
+	webhook := gjson.Get(
+			storeJSON.String(), webhookPath).
+		String()
+
+  log_(webhook, nil)
+
+	return webhook
 }
 
 
@@ -206,6 +148,7 @@ func printGame(gameNum int, gameData []string) {
 		"tags",
 		"desc",
 	}
+
 	if gameNum != -1 {
 		//log the number of games
 		log_(fmt.Sprintf("game %d", gameNum+1), nil)
@@ -240,77 +183,6 @@ func printGame(gameNum int, gameData []string) {
 }
 
 
-func main() {
-	//iterate through each of the stores
-	for i := 0; i < len(stores); i++ {
-		var numGames int
-		var storeURL string
-		var gamesData [][]string
-		var storeColor int
-
-		//call the scraper, err if unsupported
-		switch stores[i] {
-		case "Steam":
-			storeURL = getStoreURL(stores[i])
-			numGames, gamesData = scrapeSteam(storeURL)
-			storeColor = 3447003
-		case "GOG":
-			storeURL = getStoreURL(stores[i])
-			numGames, gamesData = scrapeGOG(storeURL)
-			storeColor = 5793266
-		default:
-			errMsg := "attempted to scrape unsupported store"
-			err := errors.New(errMsg)
-			log_(stores[i], err)
-		}
-	
-		
-		//log store's url
-		log_(storeURL, nil)
-	
-		//log games' data array
-		log_(fmt.Sprintf(
-			"games data: %+v\n",
-			gamesData), nil)
-
-		//log the number of games
-		log_(fmt.Sprintf(
-				"number of games: %d\n",
-				numGames), nil)
-
-		//send the amount of games to Discord
-		sendAmountToDiscord(
-			strconv.Itoa(numGames),
-			stores[i])
-
-		//send the games to discord and log them
-		currDiscordURL := 1
-		for i := 0; i < numGames; i++ {	
-			//so the next chunk is easier to read
-	        gameLink := gamesData[i][0]
-	        gameName := gamesData[i][1]
-	        gameIMG := gamesData[i][2]
-	        gameTags := gamesData[i][3]
-	    	gameDesc := gamesData[i][4]
-
-			sendGamesToDiscord(
-				gameName,
-				gameDesc,
-				gameTags,
-				gameLink,
-				gameIMG,
-				storeColor,
-				currDiscordURL)
-
-			printGame(-1, gamesData[i])
-	
-			currDiscordURL++
-			if currDiscordURL == 3 {
-				currDiscordURL = 0
-			}
-		}
-	}
-}
 
 func sendGamesToDiscord(
 		gameName string,
@@ -320,6 +192,7 @@ func sendGamesToDiscord(
 		gameIMG string,
 		gameColor int,
 		currentDiscordURL int) {
+	log_("sendGamesToDiscord()", nil)
 	var webHookURL string
 	if strings.Contains(gameURL, "steampowered") {
 		webHookURL = getWebhook("Steam", currentDiscordURL)
@@ -375,7 +248,9 @@ func sendGamesToDiscord(
 
 func sendAmountToDiscord(amount string, platform string) {
 	webhookURL := getWebhook(platform, 0)
-	
+
+	log_("webhookURL == " + webhookURL, nil)
+
 	//make sure to user the proper grammatical number
 	verbageISare := "are"
 	verbageGame := "games"
@@ -411,5 +286,77 @@ func sendAmountToDiscord(amount string, platform string) {
 	if resp != nil {
 		//prevent body from being closed until fn done
 		defer resp.Body.Close()
+	}
+}
+
+func main() {
+	//iterate through each of the stores
+	for i := 0; i < len(stores); i++ {
+		var numGames int
+		var storeURL string
+		var gamesData [][]string
+		var storeColor int
+
+		//call the scraper, err if unsupported
+		switch stores[i] {
+		case "Steam":
+			storeURL = steamSearchURL
+			numGames, gamesData = scrapeSteam(storeURL)
+			storeColor = 3447003
+		case "GOG":
+			storeURL = gogSearchURL
+			numGames, gamesData = scrapeGOG(storeURL)
+			storeColor = 10181046
+		default:
+			errMsg := "attempted to scrape unsupported store"
+			err := errors.New(errMsg)
+			log_(stores[i], err)
+		}
+	
+		
+		//log store's url
+		log_(storeURL, nil)
+	
+		//log games' data array
+		log_(fmt.Sprintf(
+			"games data: %+v\n",
+			gamesData), nil)
+
+		//log the number of games
+		log_(fmt.Sprintf(
+				"number of games: %d\n",
+				numGames), nil)
+
+		//send the amount of games to Discord
+		sendAmountToDiscord(
+			strconv.Itoa(numGames),
+			stores[i])
+
+		//send the games to discord and log them
+		currDiscordURL := 1
+		for i := 0; i < numGames; i++ {	
+			//so the next chunk is easier to read
+	        gameLink := gamesData[i][0]
+	        gameName := gamesData[i][1]
+	        gameIMG := gamesData[i][2]
+	        gameTags := gamesData[i][3]
+	    	gameDesc := gamesData[i][4]
+
+			sendGamesToDiscord(
+				gameName,
+				gameDesc,
+				gameTags,
+				gameLink,
+				gameIMG,
+				storeColor,
+				currDiscordURL)
+
+			printGame(-1, gamesData[i])
+	
+			currDiscordURL++
+			if currDiscordURL == 3 {
+				currDiscordURL = 0
+			}
+		}
 	}
 }
